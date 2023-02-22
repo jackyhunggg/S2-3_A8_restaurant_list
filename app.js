@@ -1,17 +1,14 @@
 const express = require('express');
-const exhbs = require('express-handlebars');
-// 加入這段 code, 僅在非正式環境時, 使用 dotenv
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-  }
+const exphbs = require('express-handlebars');
 const app = express();
 const port = 3000;
 // 載入 mongoose
 const mongoose = require('mongoose')
-// 設定連線到 mongoDB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 // 取得資料庫連線狀態
 const db = mongoose.connection
+
+// 設定連線到 mongoDB
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 // 連線異常
 db.on('error', () => {
     console.log('mongodb error!')
@@ -20,9 +17,13 @@ db.on('error', () => {
 db.once('open', () => {
     console.log('mongodb connected!')
 })
+// 加入這段 code, 僅在非正式環境時, 使用 dotenv
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+  }
 
 app.use(express.static('public'));
-app.engine('handlebars', exhbs({defaultLayout: 'main'}));
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 // 使用者可以在首頁看到所有餐廳與它們的簡單資料
