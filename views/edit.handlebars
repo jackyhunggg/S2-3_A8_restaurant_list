@@ -1,0 +1,26 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-10 col-12 mx-auto">
+      <div class="row row-cols-sm-3">
+
+        <a href="{{{restaurant.id}}}" class="text-secondary">
+          <div class="card mb-3">
+            <img class="card-img-top" src={{restaurant.image}} alt={{restaurant.name}}>
+            <div class="card-body p-3">
+              <input type="text" placeholder="name" name="name" value="{{ restaurant.name }}">
+
+              <div class="restaurant-category mb-1">
+                <i class="fas fa-utensils pr-2"></i> {{restaurant.category}}
+              </div>
+
+              <span class="badge badge-pill badge-danger font-weight-normal">
+                {{restaurant.rating}}
+                <i class="fas fa-star fa-xs"></i>
+              </span>
+
+            </div>
+          </div>
+        </a>
+ 
+        <button type="submit">Save</button>
+        <a href="/">back</a>

@@ -47,10 +47,13 @@ app.get('/search', (req,res) => {
 })
 
 // 使用者可以點進去看餐廳的詳細資訊
-app.get('/:restaurant_id', (req, res) => {
-    const restaurant = list.results.find(restaurant => restaurant.id.toString() === req.params.restaurant_id)
-    console.log(req.params.restaurant_id.toString())
-    res.render('show', {restaurant: restaurant})
+app.get('/:id', (req, res) => {
+    const id = req.params.id
+    console.log(id)
+    Restaurant.findById(id)
+        .lean()
+        .then(restaurantData => res.render('detail', { restaurantData }))
+        .catch(err => console.log(err))
 })
 
 app.listen(port, () => {
