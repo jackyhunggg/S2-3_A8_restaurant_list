@@ -52,7 +52,7 @@ app.get('/:id', (req, res) => {
     console.log(id)
     Restaurant.findById(id)
         .lean()
-        .then(restaurantData => res.render('detail', { restaurantData }))
+        .then(restaurantData => res.render('show', { restaurantData }))
         .catch(err => console.log(err))
 })
 
