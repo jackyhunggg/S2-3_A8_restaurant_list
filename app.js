@@ -34,18 +34,6 @@ app.get('/', (req, res) => {
         .catch(err => console.log(err))
 })
 
-// 使用者可以透過搜尋餐廳名稱and類別來找到特定的餐廳
-app.get('/search', (req,res) => {
-    const keyword = req.query.keyword;
-    const restaurants = list.results.filter(restaurant => {
-        return restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
-        || restaurant.name_en.toLowerCase().includes(keyword.toLowerCase())
-        || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
-    })
-    console.log(restaurants)
-    res.render('index', {restaurant: restaurants, keyword: keyword})
-})
-
 // 使用者可以點進去看餐廳的詳細資訊
 app.get('/:id', (req, res) => {
     const id = req.params.id
@@ -55,6 +43,32 @@ app.get('/:id', (req, res) => {
         .then(restaurantData => res.render('show', { restaurantData }))
         .catch(err => console.log(err))
 })
+
+// 使用者可以透過搜尋餐廳名稱and類別來找到特定的餐廳
+app.get('/search', (req,res) => {
+    // raw input value of the keyword
+    const keyword = req.query.keyword
+    // make the keyword and the restaurant name lower case
+    const keywords = req.query.keyword.trim().toLowerCase()
+    // if the search result is empty, redirect to main page
+    if(!keyword) {
+        res.redirect('/')
+    }
+    Restaurant.find({})
+        .lean()
+        .then(restaurantData => {
+            // filter out the results
+            const filteredrestaurantData = restaurantData.filter(
+            // the data should be searched by restaurant name and its category
+                data => data.name.toLowerCase.include(keywords) ||
+                data.category.toLowerCase.include(keywords)
+            )
+            res.render('index',{restaurantData: filteredrestaurantData, keyword})
+        })
+        .catch(err => console.log(err))
+})
+
+
 
 app.listen(port, () => {
     console.log(`express is running on http:// localhost: ${port}`)
