@@ -3,6 +3,8 @@ const exphbs = require('express-handlebars');
 const Restaurant = require('./models/restaurant')
 const app = express();
 const port = 3000;
+// 引用 body-parser
+const bodyParser = require('body-parser');
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
@@ -25,6 +27,8 @@ db.once('open', () => {
 app.use(express.static('public'));
 app.engine('handlebars',exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
+// 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // 使用者可以在首頁看到所有餐廳與它們的簡單資料
 app.get('/', (req, res) => {
@@ -44,31 +48,26 @@ app.get('/:id', (req, res) => {
         .catch(err => console.log(err))
 })
 
-// 使用者可以透過搜尋餐廳名稱and類別來找到特定的餐廳
-app.get('/search', (req,res) => {
-    // raw input value of the keyword
-    const keyword = req.query.keyword
-    // make the keyword and the restaurant name lower case
-    const keywords = req.query.keyword.trim().toLowerCase()
-    // if the search result is empty, redirect to main page
-    if(!keyword) {
-        res.redirect('/')
-    }
-    Restaurant.find({})
-        .lean()
-        .then(restaurantData => {
-            // filter out the results
-            const filteredrestaurantData = restaurantData.filter(
-            // the data should be searched by restaurant name and its category
-                data => data.name.toLowerCase.include(keywords) ||
-                data.category.toLowerCase.include(keywords)
-            )
-            res.render('index',{restaurantData: filteredrestaurantData, keyword})
-        })
+// 使用者可以新增一家餐廳
+app.get('/restaurants/new', (req, res) => {
+    res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+    Restaurant.create(req.body.name)
+        .then(console.log(req.body))
+        .then(res.redirect('/'))
         .catch(err => console.log(err))
 })
 
-
+// 更新餐廳
+app.put("/restaurants/:restaurantId", (req, res) => {
+    const { restaurantId } = req.params
+    Restaurant.findByIdAndUpdate(restaurantId, req.body)
+      //可依照專案發展方向自定編輯後的動作，這邊是導向到瀏覽特定餐廳頁面
+      .then(() => res.redirect(`/restaurants/${restaurantId}`))
+      .catch(err => console.log(err))
+  })
 
 app.listen(port, () => {
     console.log(`express is running on http:// localhost: ${port}`)
