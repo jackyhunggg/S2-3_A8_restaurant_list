@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const methodOverride = require("method-override")
 const Restaurant = require('./models/restaurant')
 const app = express();
 const port = 3000;
@@ -29,6 +30,7 @@ app.engine('handlebars',exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(methodOverride("_method"))
 
 // 使用者可以在首頁看到所有餐廳與它們的簡單資料
 app.get('/', (req, res) => {
@@ -57,6 +59,15 @@ app.post('/restaurants', (req, res) => {
     Restaurant.create(req.body)
         .then(console.log(req.body))
         .then(() => res.redirect('/'))
+        .catch(err => console.log(err))
+})
+
+// 編輯餐廳
+app.get('/restaurants/:restaurantId/edit', (req, res) => {
+    const { restaurantId } = req.params
+    Restaurant.findById(restaurantId)
+        .lean()
+        .then(restaurantData => res.render('edit', { restaurantData }))
         .catch(err => console.log(err))
 })
 
