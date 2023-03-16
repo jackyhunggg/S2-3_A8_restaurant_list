@@ -54,9 +54,9 @@ app.get('/restaurants/new', (req, res) => {
 })
 
 app.post('/restaurants', (req, res) => {
-    Restaurant.create(req.body.name)
+    Restaurant.create(req.body)
         .then(console.log(req.body))
-        .then(res.redirect('/'))
+        .then(() => res.redirect('/'))
         .catch(err => console.log(err))
 })
 
