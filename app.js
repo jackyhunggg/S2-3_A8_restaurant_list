@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
 })
 
 // 使用者可以點進去看餐廳的詳細資訊
-app.get('/:id', (req, res) => {
+app.get('/restaurants/:id', (req, res) => {
     const id = req.params.id
     console.log(id)
     Restaurant.findById(id)
@@ -78,6 +78,36 @@ app.put("/restaurants/:restaurantId", (req, res) => {
       //可依照專案發展方向自定編輯後的動作，這邊是導向到瀏覽特定餐廳頁面
       .then(() => res.redirect(`/restaurants/${restaurantId}`))
       .catch(err => console.log(err))
+  })
+
+// 刪除餐廳
+app.delete("/restaurants/:restaurantId", (req, res) => {
+    const { restaurantId } = req.params
+    Restaurant.findByIdAndDelete(restaurantId)
+      .then(() => res.redirect("/"))
+      .catch(err => console.log(err))
+  })
+
+// 設定路由：搜尋餐廳關鍵字 or 餐廳類別
+app.get('/search', (req, res) => {
+    let keyword = req.query.keyword
+  
+    //若沒輸入內容時，將頁面導回根目錄，顯示出所有餐廳
+    if (!keyword) {
+      return res.redirect("/")
+    }
+  
+    Restaurant.find({})
+      .lean()
+      .then(restaurants => {
+        const filterData =
+          restaurants.filter(restaurant =>
+            restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
+            || restaurant.name_en.toLowerCase().includes(keyword.toLowerCase())
+            || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
+          )
+        res.render('index', { restaurants: filterData, keyword })
+      })
   })
 
 app.listen(port, () => {
