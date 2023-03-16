@@ -99,14 +99,14 @@ app.get('/search', (req, res) => {
   
     Restaurant.find({})
       .lean()
-      .then(restaurants => {
+      .then(restaurantData => {
         const filterData =
-          restaurants.filter(restaurant =>
+          restaurantData.filter(restaurant =>
             restaurant.name.toLowerCase().includes(keyword.toLowerCase()) 
             || restaurant.name_en.toLowerCase().includes(keyword.toLowerCase())
             || restaurant.category.toLowerCase().includes(keyword.toLowerCase())
           )
-        res.render('index', { restaurants: filterData, keyword })
+        res.render('index', { restaurantData: filterData, keyword })
       })
   })
 
