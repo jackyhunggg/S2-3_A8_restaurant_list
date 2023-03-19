@@ -23,7 +23,7 @@
 
 執行檔案，再輸入：
 
-    npm run start
+    npm run dev
 
 進入網址
 http://localhost:3000/
