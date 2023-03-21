@@ -50,9 +50,9 @@ app.get('/restaurants/:id', (req, res) => {
         .catch(err => console.log(err))
 })
 
-// 使用者可以新增一家餐廳
-app.get('/restaurants/new', (req, res) => {
-    res.render('new')
+// 新增餐廳頁面
+app.get("/restaurants/new", (req, res) => {
+  res.render("new")
 })
 
 app.post('/restaurants', (req, res) => {
