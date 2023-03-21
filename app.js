@@ -40,6 +40,11 @@ app.get('/', (req, res) => {
         .catch(err => console.log(err))
 })
 
+// 新增餐廳頁面
+app.get("/restaurants/new", (req, res) => {
+  res.render("new")
+})
+
 // 使用者可以點進去看餐廳的詳細資訊
 app.get('/restaurants/:id', (req, res) => {
     const id = req.params.id
@@ -48,11 +53,6 @@ app.get('/restaurants/:id', (req, res) => {
         .lean()
         .then(restaurantData => res.render('show', { restaurantData }))
         .catch(err => console.log(err))
-})
-
-// 新增餐廳頁面
-app.get("/restaurants/new", (req, res) => {
-  res.render("new")
 })
 
 app.post('/restaurants', (req, res) => {
