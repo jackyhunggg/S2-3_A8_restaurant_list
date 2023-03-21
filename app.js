@@ -81,8 +81,9 @@ app.put("/restaurants/:restaurantId", (req, res) => {
   })
 
 // 刪除餐廳
-app.delete("/restaurants/:restaurantId", (req, res) => {
-    const { restaurantId } = req.params
+app.post("/restaurants/:restaurantId/delete", (req, res) => {
+    const restaurantId = req.params.restaurantId
+    console.log(req.params)
     Restaurant.findByIdAndDelete(restaurantId)
       .then(() => res.redirect("/"))
       .catch(err => console.log(err))
