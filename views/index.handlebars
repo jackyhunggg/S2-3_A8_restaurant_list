@@ -1,19 +1,30 @@
 {{!-- 這是局部樣板 --}}
 
-<!-- search bar -->
-<div class="container search-bar">
-  <div class="search-bar-outer">
-    <div class="search-bar-inner">
-      <form action="/search">
-        <h4 class="mb-2">尋找餐廳：</h4>
-        <div class="input-group">
-          <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" 
-          value="{{keyword}}"" aria-label="Restaurant Name..." value="" aria-describedby="search-button">
-          <div class="input-group-append">
-            <button class="btn btn-major" type="submit" id="search-button"> Search <i class="fas fa-search"></i></button>
+<!-- search bar & sorting dropdown -->
+<div class="d-inline">
+  <div class="container search-bar">
+    <div class="search-bar-outer">
+      <div class="search-bar-inner">
+        <form action="/search">
+          <h4 class="mb-2">尋找餐廳：</h4>
+          <div class="input-group">
+            <input type="text" name="keyword" class="form-control" placeholder="輸入餐廳、分類" 
+            value="{{keyword}}"" aria-label="Restaurant Name..." value="" aria-describedby="search-button">
+            <div class="input-group-append">
+              <button class="btn btn-major" type="submit" id="search-button"> Search <i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="dropdown">
+              <select id="sort" name="sort">
+                <option>A -> Z</option>
+                <option>Z -> A</option>
+                <option>類別</option>
+                <option>地區</option>
+              </select>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>
