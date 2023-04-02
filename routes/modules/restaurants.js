@@ -1,6 +1,7 @@
 // Load express and express router
 const express = require('express')
 const router = express.Router()
+const Restaurant = require('../../models/restaurant')
 
 // 新增餐廳頁面
 router.get('/new', (req, res) => {
