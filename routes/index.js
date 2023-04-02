@@ -10,6 +10,5 @@ const restaurants = require('./modules/restaurants')
 router.use('/', home)
 router.use('/restaurants', restaurants)
 
-
 // export the router
 module.exports = router
