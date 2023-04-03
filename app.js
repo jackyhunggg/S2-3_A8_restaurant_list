@@ -5,7 +5,7 @@ const Restaurant = require('./models/restaurant')
 const app = express()
 // 引用路由器
 const routes = require('./routes')
-const port = 3000
+const port = 3002
 // 引用 body-parser
 const bodyParser = require('body-parser')
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
